@@ -1,0 +1,4 @@
+# Core libraries required for the Deer Identification Pipeline
+Pillow
+numpy
+opencv-python

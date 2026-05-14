@@ -1,0 +1,327 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deer Identification System | GladMe Studio</title>
+    <style>
+        :root {
+            --primary-color: #3b7b3d; /* Forest Green */
+            --secondary-color: #f0f4f0; /* Light Background */
+            --text-color: #333;
+            --success-color: #4CAF50;
+            --error-color: #f44336;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            margin: 5px 0;
+            font-size: 2.2em;
+        }
+
+        header p {
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* --- Input Section --- */
+        .input-section {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            align-self: flex-start;
+        }
+
+        button:hover {
+            background-color: #2a5d32; /* Darker green */
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* --- Results Section --- */
+        .output-section {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .image-output-container, .json-output-container {
+            border: 1px dashed #ccc;
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+
+        #resultImage {
+            max-width: 100%;
+            height: auto;
+            display: none; /* Hidden until results are processed */
+            border-radius: var(--border-radius);
+        }
+
+        .json-output-container pre {
+            background-color: #eef;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .status-message {
+            margin-top: 15px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .status-success {
+            background-color: #e6ffe6;
+            color: var(--success-color);
+        }
+
+        .status-error {
+            background-color: #ffe6e6;
+            color: var(--error-color);
+        }
+        
+        /* Responsiveness */
+        @media (max-width: 900px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🦌 Deer Identification System</h1>
+        <p>A Computer Vision Pipeline for Species and Attribute Classification (GladMe Studio)</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- INPUT SECTION -->
+        <section class="input-section">
+            <h2>Analyze Image</h2>
+            <p>Upload a JPEG or PNG image for automatic object detection and classification of deer species.</p>
+
+            <div class="input-group">
+                <label for="imageUpload">Select Image File:</label>
+                <input type="file" id="imageUpload" accept="image/jpeg, image/png" required>
+            </div>
+            
+            <button id="analyzeButton">Run Detection Pipeline</button>
+        </section>
+
+        <!-- OUTPUT SECTION -->
+        <section class="output-section">
+            <h2>Analysis Results</h2>
+            
+            <div class="status-message" id="statusMessage">
+                Awaiting analysis...
+            </div>
+            
+            <div class="results-grid">
+                
+                <!-- Image Visualization Panel -->
+                <div>
+                    <h3>Visual Output (Annotated Image)</h3>
+                    <div class="image-output-container">
+                        <img id="resultImage" alt="Annotated image showing detected deer and classification labels">
+                    </div>
+                </div>
+
+                <!-- JSON Data Panel -->
+                <div>
+                    <h3>Structured Data (JSON Metadata)</h3>
+                    <p>The machine-readable data detailing bounding boxes, species, and confidence scores.</p>
+                    <div class="json-output-container">
+                        <pre id="jsonOutput">Waiting for results...</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.getElementById('analyzeButton').addEventListener('click', runAnalysis);
+        const fileInput = document.getElementById('imageUpload');
+        const analyzeButton = document.getElementById('analyzeButton');
+        const statusMessage = document.getElementById('statusMessage');
+        const resultImage = document.getElementById('resultImage');
+        const jsonOutput = document.getElementById('jsonOutput');
+
+        /**
+         * Simulates sending the image to the Python Backend API endpoint.
+         * @param {File} file - The uploaded image file.
+         */
+        async function runAnalysis(file) {
+            if (!file) {
+                updateStatus("Please select an image file first.", "status-error");
+                return;
+            }
+
+            // 1. UI State Update
+            analyzeButton.disabled = true;
+            analyzeButton.textContent = 'Analyzing... Please Wait';
+            updateStatus("Starting pipeline... Connecting to the CV backend.", "status-success");
+            resultImage.style.display = 'none';
+            jsonOutput.textContent = 'Processing data...';
+
+            // --- START: SIMULATION OF API CALL ---
+            // In a real application, this would be a fetch() call to a FastAPI endpoint.
+            // fetch('/api/analyze', { method: 'POST', body: formData })
+            
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate 2 second network latency/processing time
+
+            // Mock Response based on success/failure state
+            const isSuccess = Math.random() > 0.1; // 90% chance of success
+            
+            if (isSuccess) {
+                const mockJsonData = {
+                    metadata: {
+                        location: "Mock Simulation",
+                        date: new Date().toISOString().split('T')[0]
+                    },
+                    detections: [
+                        {
+                            bbox: [150, 200, 400, 550],
+                            label: "White-tailed Deer",
+                            confidence: 0.9123,
+                            attributes: { Sex: "Male", Age: "Adult" }
+                        },
+                        {
+                            bbox: [500, 300, 750, 600],
+                            label: "Mule Deer",
+                            confidence: 0.7855,
+                            attributes: { Sex: "Female", Age: "Young" }
+                        }
+                    ]
+                };
+
+                const mockImageBytes = URL.createObjectURL(file); // Use the uploaded file URL for display
+
+                // 2. Update UI with Mock Results
+                document.getElementById('jsonOutput').textContent = JSON.stringify(mockJsonData, null, 4);
+                resultImage.src = mockImageBytes;
+                resultImage.style.display = 'block';
+                updateStatus("Pipeline completed successfully! Two deer detected.", "status-success");
+                
+            } else {
+                // Failure Case Simulation
+                const errorJson = {
+                    error: "PIPELINE FAILURE: Model unable to confirm species due to low light or poor image quality."
+                };
+                document.getElementById('jsonOutput').textContent = JSON.stringify(errorJson, null, 4);
+                resultImage.style.display = 'none';
+                updateStatus("Analysis failed. Check JSON logs for details.", "status-error");
+            }
+
+            // --- END: SIMULATION OF API CALL ---
+
+            // 3. Reset State
+            analyzeButton.disabled = false;
+            analyzeButton.textContent = 'Run Detection Pipeline';
+        }
+
+        /**
+         * Helper function to update the status display.
+         * @param {string} message - The message to display.
+         * @param {string} className - The appropriate status CSS class.
+         */
+        function updateStatus(message, className) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${className}`;
+        }
+    </script>
+
+</body>
+</html>
+```
+
+I have created a comprehensive front-end file, `website.html`, that addresses your request.
+
+### Summary of Changes and Next Steps:
+
+1.  **File Created:** `website.html`
+2.  **Content:** The file contains a modern, responsive single-page mockup. It includes a file upload area and a "Run Detection Pipeline" button.
+3.  **Functionality:** The JavaScript section simulates the interaction with your Python backend. When the button is clicked, it simulates the time taken for the pipeline to run, and then displays mock successful results (annotated image preview and structured JSON data) or mock failure states.
+
+**User Next Step:**
+
+You now have the front-end presentation layer (`website.html`). The next critical step is to integrate your existing, robust Python backend logic (`main.py` content) into a web framework (like **FastAPI** or **Flask**).
+
+This wrapper API will receive the image uploaded via `website.html`, run the `DeerIdentificationService.process_image` method, and return the resulting base64 encoded image and JSON string back to the front-end script. I recommend starting by writing the FastAPI wrapper.

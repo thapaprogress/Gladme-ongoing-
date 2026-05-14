@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mango — Fresh Fruit Delivered</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: oklch(97% 0.018 70);
+      --surface: oklch(99% 0.008 70);
+      --fg: oklch(22% 0.02 50);
+      --muted: oklch(50% 0.018 50);
+      --border: oklch(90% 0.014 70);
+      --accent: oklch(64% 0.13 28);
+
+      --font-display: 'Tiempos Headline', 'Newsreader', 'Iowan Old Style', Georgia, serif;
+      --font-body: 'Söhne', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+    }
+
+    /* Masthead */
+    header {
+      padding: 32px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background-color: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--fg);
+      letter-spacing: -0.01em;
+    }
+
+    nav {
+      display: flex;
+      gap: 40px;
+    }
+
+    nav a {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-content h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 8vw, 72px);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+
+    .hero-content p {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 500px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background-color: var(--accent);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero-image {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #f4d47c 0%, #e8b559 50%, #d4a574 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Why Mango Section */
+    .why-section {
+      padding: 80px 40px;
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .why-section .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 600;
+      margin-bottom: 60px;
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .why-card {
+      padding: 0;
+    }
+
+    .why-card h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--fg);
+    }
+
+    .why-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* Varieties Section */
+    .varieties-section {
+      padding: 80px 40px;
+    }
+
+    .varieties-section .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .varieties-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      margin-top: 60px;
+    }
+
+    .variety-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px;
+      transition: box-shadow 0.2s;
+    }
+
+    .variety-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .variety-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #ffd89b 0%, #ffb84d 50%, #ff9d3c 100%);
+      border-radius: 12px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .variety-card h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--fg);
+    }
+
+    .variety-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .variety-tag {
+      display: inline-block;
+      background-color: var(--border);
+      color: var(--muted);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Sourcing Section */
+    .sourcing-section {
+      padding: 80px 40px;
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sourcing-section .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .sourcing-image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #d4a574 0%, #c49464 50%, #b48454 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .sourcing-content h2 {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+
+    .sourcing-content p {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .sourcing-content ul {
+      list-style: none;
+      margin-top: 24px;
+    }
+
+    .sourcing-content li {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      position: relative;
+      color: var(--fg);
+      font-size: 15px;
+    }
+
+    .sourcing-content li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* CTA Section */
+    .final-cta {
+      padding: 80px 40px;
+      text-align: center;
+    }
+
+    .final-cta .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .final-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 56px);
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+
+    .final-cta p {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: white;
+      padding: 14px 36px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--accent);
+      padding: 14px 36px;
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--accent);
+      color: white;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px;
+      border-top: 1px solid var(--border);
+      background-color: var(--surface);
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      margin: 0 16px;
+      font-size: 14px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    .hero-content h1 {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .hero-content p {
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .hero-cta {
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .hero-image {
+      animation: slideInRight 0.8s ease-out;
+    }
+
+    .section-header {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .why-card {
+      animation: fadeInUp 0.8s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .why-card:nth-child(1) { animation-delay: 0.1s; }
+    .why-card:nth-child(2) { animation-delay: 0.2s; }
+    .why-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .variety-card {
+      animation: fadeInUp 0.8s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .variety-card:nth-child(1) { animation-delay: 0.1s; }
+    .variety-card:nth-child(2) { animation-delay: 0.2s; }
+    .variety-card:nth-child(3) { animation-delay: 0.3s; }
+    .variety-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .variety-card:hover .variety-image {
+      animation: pulse 0.6s ease-in-out;
+    }
+
+    .sourcing-image {
+      animation: slideInLeft 0.8s ease-out;
+    }
+
+    .sourcing-content h2,
+    .sourcing-content p {
+      animation: slideInRight 0.8s ease-out;
+    }
+
+    .final-cta h2 {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .final-cta p {
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .btn-primary, .btn-secondary {
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px 20px;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 48px 20px;
+        gap: 40px;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .varieties-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sourcing-section .container {
+        grid-template-columns: 1fr;
+      }
+
+      .why-section,
+      .varieties-section,
+      .sourcing-section,
+      .final-cta {
+        padding: 48px 20px;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Masthead -->
+  <header>
+    <div class="logo">🥭 Mango</div >
+    <nav>
+      <a href="#varieties">Varieties</a >
+      <a href="#sourcing">Sourcing</a >
+      <a href="#shop">Shop</a >
+      <a href="contact.html">Contact</a >
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 >The Golden Fruit of Summer</h1 >
+      <p>Freshly harvested mangoes delivered to your door. Rich, creamy, and bursting with the taste of the tropics. From our farms to your table, pure perfection.</p>
+      <a href="#shop" class="hero-cta">Shop Fresh Mangoes</a >
+    </div >
+    <div class="hero-image">🥭</div >
+  </section>
+
+  <!-- Why Mango Section -->
+  <section class="why-section">
+    <div class="container">
+      <h2 class="section-header">Why Choose Our Mango</h2 >
+      <div class="why-grid">
+        <div class="why-card">
+          <h3 >Bursting with Nutrients</h3 >
+          <p>Rich in Vitamin C, A, and fiber. Each mango is a powerhouse of antioxidants and natural sweetness, supporting your wellness journey.</p>
+        </div >
+        <div class="why-card">
+          <h3 >Perfectly Ripened</h3 >
+          <p>Hand-selected and picked at peak ripeness, our mangoes arrive at your door ready to enjoy. Sweet, creamy, and full of flavor.</p>
+        </div >
+        <div class="why-card">
+          <h3 >Sustainable & Ethical</h3 >
+          <p>Sourced from family farms with regenerative practices. We believe in sustainable agriculture that protects the land for future generations.</p>
+        </div >
+      </div >
+    </div >
+  </section>
+
+  <!-- Varieties Section -->
+  <section class="varieties-section" id="varieties">
+    <div class="container">
+      <h2 class="section-header">Explore Our Varieties</h2 >
+      <div class="varieties-grid">
+        <div class="variety-card">
+          <div class="variety-image">🥭</div >
+          <h3 >Alphonso</h3 >
+          <p>The king of mangoes. Renowned for its rich, creamy texture and complex sweetness. Grown in the Ratnagiri region of India.</p>
+          <span class="variety-tag">Premium • Sweet</span >
+        </div >
+        <div class="variety-card">
+          <div class="variety-image">🥭</div >
+          <h3 >Ataulfo</h3 >
+          <p>Small but mighty. With a smooth, buttery flavor and minimal fiber, Ataulfos are perfect for those who crave pure indulgence.</p>
+          <span class="variety-tag">Creamy • Dense</span >
+        </div >
+        <div class="variety-card">
+          <div class="variety-image">🥭</div >
+          <h3 >Tommy Atkins</h3 >
+          <p>Bright and refreshing with a balanced sweet-tart profile. Great for eating fresh, smoothies, or salads.</p>
+          <span class="variety-tag">Versatile • Juicy</span >
+        </div >
+        <div class="variety-card">
+          <div class="variety-image">🥭</div >
+          <h3 >Kent</h3 >
+          <p>Large and luscious with a fiber-free seed. Known for its gentle sweetness and delicate flavor. A favorite for the whole family.</p>
+          <span class="variety-tag">Family-Friendly • Mild</span >
+        </div >
+      </div >
+    </div >
+  </section>
+
+  <!-- Sourcing Section -->
+  <section class="sourcing-section" id="sourcing">
+    <div class="container">
+      <div class="sourcing-image">🌾</div >
+      <div class="sourcing-content">
+        <h2>Grown with Care</h2>
+        <p>We work directly with a network of trusted farmers who share our commitment to quality and sustainability. Every mango is selected for ripeness and flavor.</p>
+        <ul>
+          <li>Handpicked at peak ripeness</li >
+          <li>No synthetic pesticides</li >
+          <li>Fair trade practices</li >
+          <li>Temperature-controlled transport</li >
+          <li>100% freshness guaranteed</li >
+        </ul>
+      </div >
+    </div >
+  </section>
+
+  <!-- Final CTA Section -->
+  <section class="final-cta" id="shop">
+    <div class="container">
+      <h2>Ready to Taste Paradise?</h2 >
+      <p>Join thousands of mango lovers who've discovered the difference fresh, ethically sourced fruit makes. Order your box today.</p>
+      <div class="cta-buttons">
+        <button class="btn-primary">Shop Now</button>
+        <button class="btn-secondary">Learn More</button>
+      </div >
+    </div >
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p>&copy; 2024 Mango. Delivering freshness to your door.</p>
+    <div >
+      <a href="about.html">About Us</a >
+      <a href="sustainability.html">Sustainability</a >
+      <a href="contact.html">Contact</a >
+      <a href="instagram.html">Instagram</a >
+    </div >
+  </footer >
+</body >
+</html >

@@ -1,0 +1,10 @@
+FROM python:3.12-slim
+
+RUN pip install --no-cache-dir pytest pytest-cov pytest-json-report \
+    && pip install --no-cache-dir httpx sqlalchemy fastapi || true
+
+RUN useradd -m -s /bin/bash runner
+USER runner
+WORKDIR /workspace
+
+CMD ["python"]

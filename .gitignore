@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+
+# Node
+node_modules/
+dist/
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Database
+# Exclude specific databases but maybe keep the skeleton one if needed.
+# For now, let's exclude all .db files to be safe with user data.
+*.db
+# Unless it's the core system DB:
+!gladme_v4.db
+
+# Docker
+.docker/
